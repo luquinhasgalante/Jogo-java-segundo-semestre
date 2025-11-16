@@ -148,7 +148,6 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
             frame.add(dino);
             frame.setLocationRelativeTo(null);
             
-            
             dino.requestFocus();
             frame.pack();
             frame.setVisible(true);

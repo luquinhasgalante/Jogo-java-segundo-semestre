@@ -3,7 +3,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -24,9 +23,12 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
     Image personagemPulando;
     Image imgOsbtaculo1;
     Image imgOsbtaculo2;
+    Image imgOsbtaculo3;
+    Image imgOsbtaculo4;
     Image personagemMorto;
     Timer loopTimer;
     Timer obsTimer;
+    Timer velTimer;
 
 
     int alturaPersonagem;
@@ -39,19 +41,23 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
     int obsX;
     int obsY;
 
-    int sla = 20;
-
     int recorde = 0;
 
     int velocidadeY = 0;
     int gravidade = 2;
 
-    Image background = Toolkit.getDefaultToolkit().createImage("ceuazul.jpeg");
-    Image background2 = Toolkit.getDefaultToolkit().createImage("ceuazul2.jpeg");
+    Image background = new ImageIcon(getClass().getResource("background_layer_1.png")).getImage();
+    Image background_1 = new ImageIcon(getClass().getResource("background_layer_2.png")).getImage();
+    Image background_2 = new ImageIcon(getClass().getResource("background_layer_3.png")).getImage();
+
     Bloco personagemBloco;
 
     Bloco fundo1;
     Bloco fundo2;
+    Bloco fundo_1;
+    Bloco fundo2_1;
+    Bloco fundo_2;
+    Bloco fundo2_2;
 
     ArrayList<Bloco> arrayObs;
 
@@ -78,20 +84,34 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
 
         this.personagemAndando = menu.personagemEscolhido.imagem;
         this.personagemPulando = menu.personagemEscolhido.imagemPulando;
-        this.imgOsbtaculo1 = new ImageIcon(getClass().getResource("/caixa.png")).getImage();
-        this.imgOsbtaculo2 = new ImageIcon(getClass().getResource("/caixa2.png")).getImage();
+        this.imgOsbtaculo1 = new ImageIcon(getClass().getResource("spike A.png")).getImage();
+        this.imgOsbtaculo2 = new ImageIcon(getClass().getResource("spike B.png")).getImage();
+        this.imgOsbtaculo3 = new ImageIcon(getClass().getResource("spike C.png")).getImage();
+        this.imgOsbtaculo4 = new ImageIcon(getClass().getResource("spike D.png")).getImage();
         this.personagemMorto = menu.personagemEscolhido.imagemMorto;
 
 
 
         personagemBloco = new Bloco(larguraPersonagem, alturaPersonagem, personagemX, personagemY, personagemAndando);
-        fundo1 = new Bloco(largura * 4, altura, 0, 0, background);
-        fundo2 = new Bloco(largura * 4, altura, largura * 4, 0, background2);
+        fundo1 = new Bloco(largura, altura, 0, 0, background);
+        fundo2 = new Bloco(largura, altura, fundo1.largura, 0, background);
+        fundo_1 = new Bloco(largura, altura, 0, 0, background_1);
+        fundo2_1 = new Bloco(largura, altura, fundo_1.largura, 0, background_1);
+        fundo_2 = new Bloco(largura, altura, 0, 0, background_2);
+        fundo2_2 = new Bloco(largura, altura, fundo_2.largura, 0, background_2);
 
 
         this.setPreferredSize(new Dimension(largura, altura));
         this.setSize(new Dimension(largura, altura));
         
+
+        velTimer = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                velocidade++;
+            }
+        });
+        velTimer.start();
 
         obsTimer = new Timer(1500, new ActionListener() {
             @Override
@@ -117,14 +137,21 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
 
     public void botarObs() {
         double chance = Math.random();
-            sla += 2;
-
-        if(chance < .4) {
+        
+        if(chance < .2) {
             Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgOsbtaculo1);
             arrayObs.add(obs);
         }
-        else if(chance < .8) {
+        else if(chance < .4) {
             Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgOsbtaculo2);
+            arrayObs.add(obs);
+        }
+        else if(chance < .6) {
+            Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgOsbtaculo3);
+            arrayObs.add(obs);
+        }
+        else if(chance < .8) {
+            Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgOsbtaculo4);
             arrayObs.add(obs);
         }
     }
@@ -132,6 +159,10 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
     public void draw(Graphics g) {
         g.drawImage(fundo1.imagem, fundo1.x, fundo1.y, fundo1.largura, fundo1.altura, null);
         g.drawImage(fundo2.imagem, fundo2.x, fundo2.y, fundo2.largura, fundo2.altura, null);
+        g.drawImage(fundo_1.imagem, fundo_1.x, fundo_1.y, fundo_1.largura, fundo_1.altura, null);
+        g.drawImage(fundo2_1.imagem, fundo2_1.x, fundo2_1.y, fundo2_1.largura, fundo2_1.altura, null);
+        g.drawImage(fundo_2.imagem, fundo_2.x, fundo_2.y, fundo_2.largura, fundo_2.altura, null);
+        g.drawImage(fundo2_2.imagem, fundo2_2.x, fundo2_2.y, fundo2_2.largura, fundo2_2.altura, null);
         g.drawImage(personagemBloco.imagem, personagemBloco.x, personagemBloco.y, personagemBloco.largura, personagemBloco.altura, null );
 
         for(int i = 0; i < arrayObs.size(); i++) {
@@ -140,8 +171,8 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
         }
 
         g.setColor(Color.WHITE);
-        g.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 30));
-        g.drawString("Score: " + score, 30, 30);
+        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+        g.drawString("Pontos: " + score, 30, 30);
         g.drawString("Recorde: " + recorde, 450, 30);
     }
 
@@ -149,18 +180,34 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
         velocidadeY += gravidade;
         personagemBloco.y += velocidadeY;
 
-        if(personagemBloco.y > personagemY) {
-            personagemBloco.y = personagemY;
+        if(personagemBloco.y > (altura - personagemBloco.altura)) {
+            personagemBloco.y = (altura - personagemBloco.altura);
             velocidadeY = 0;
             personagemBloco.imagem = personagemAndando;
         }
 
-        if(fundo1.x <= -largura * 4) {
+        if(fundo1.x <= - largura) {
             fundo1.x = fundo2.x + fundo1.largura;
         }
 
-        if(fundo2.x <= -largura * 4) {
+        if(fundo2.x <= - largura) {
             fundo2.x = fundo1.x + fundo1.largura;
+        }
+
+        if(fundo_1.x <= -largura) {
+            fundo_1.x = fundo2_1.x + fundo_1.largura;
+        }
+
+        if(fundo2_1.x <= -largura) {
+            fundo2_1.x = fundo_1.x + fundo_1.largura;
+        }
+
+        if(fundo_2.x <= -largura) {
+            fundo_2.x = fundo2_2.x + fundo2_2.largura;
+        }
+        
+        if(fundo2_2.x <= -largura) {
+            fundo2_2.x = fundo_2.x + fundo_2.largura;
         }
 
         for(Bloco b : arrayObs) {
@@ -172,12 +219,16 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
             }
         }
 
-        fundo1.x -= velocidade;
-        fundo2.x -= velocidade;
+        fundo1.x -= (velocidade - 5);
+        fundo2.x -= (velocidade - 5);
+
+        fundo_1.x -= (velocidade - 3);
+        fundo2_1.x -= (velocidade - 3);
+
+        fundo_2.x -= velocidade;
+        fundo2_2.x -= velocidade;
 
         score++;
-
-        velocidade = sla / 2;
     }
 
     @Override
@@ -203,11 +254,14 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
                 gameOver = false;
                 fundo1.x = 0;
                 fundo2.x = fundo2.largura;
+
+                fundo_2.x = 0;
+                fundo2_2.x = fundo_2.largura;
                 
                 recorde = Math.max(recorde, score);
                 score = 0;
                 arrayObs.clear();
-                sla = 20;
+                velocidade = 20;
 
                 loopTimer.start();
                 obsTimer.start();
@@ -216,6 +270,8 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
         }
 
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+            personagemBloco.altura = 30;
+            personagemBloco.y = (altura - personagemBloco.altura);
         }
     }
 
@@ -225,5 +281,6 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
 
     @Override
     public void keyReleased(KeyEvent e) {
+        personagemBloco.altura = alturaPersonagem;
     }
 }
