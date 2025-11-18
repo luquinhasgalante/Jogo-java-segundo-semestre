@@ -27,9 +27,9 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
     int personagemX = 335;
     int personagemY;
 
-    Image fundo = new ImageIcon(getClass().getResource("fundo.jpg")).getImage();
-    Image fundoDireita = new ImageIcon(getClass().getResource("fundo direita.jpg")).getImage();
-    Image fundoEsquerda = new ImageIcon(getClass().getResource("fundo esquerda.jpg")).getImage();
+    Image fundo = new ImageIcon(getClass().getResource("img/fundo.jpg")).getImage();
+    Image fundoDireita = new ImageIcon(getClass().getResource("img/fundo direita.jpg")).getImage();
+    Image fundoEsquerda = new ImageIcon(getClass().getResource("img/fundo esquerda.jpg")).getImage();
     Bloco background = new Bloco(largura, altura, 0, 0, fundo);
     
     ArrayList<Bloco> fundos;
@@ -59,22 +59,22 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
         this.personagemY = (altura / 2) - 10;
 
 
-        Image padrao = new ImageIcon(getClass().getResource("andar.gif")).getImage();
-        Image padraoPulando = new ImageIcon(getClass().getResource("pulando.png")).getImage();
-        Image padraoMorto = new ImageIcon(getClass().getResource("mortinho.png")).getImage();
+        Image padrao = new ImageIcon(getClass().getResource("img/andar.gif")).getImage();
+        Image padraoPulando = new ImageIcon(getClass().getResource("img/pulando.png")).getImage();
+        Image padraoMorto = new ImageIcon(getClass().getResource("img/mortinho.png")).getImage();
 
 
-        Image dino = new ImageIcon(getClass().getResource("dino-run.gif")).getImage();
-        Image dinoPulo = new ImageIcon(getClass().getResource("dino.png")).getImage();
-        Image dinoMorto = new ImageIcon(getClass().getResource("dino-dead.png")).getImage();
+        Image dino = new ImageIcon(getClass().getResource("img/dino-run.gif")).getImage();
+        Image dinoPulo = new ImageIcon(getClass().getResource("img/dino.png")).getImage();
+        Image dinoMorto = new ImageIcon(getClass().getResource("img/dino-dead.png")).getImage();
 
-        Image megaman = new ImageIcon("megaman-right-walk.gif").getImage();
-        Image megamanPulo = new ImageIcon("megaman-right-jump.png").getImage();
-        Image megamanMorto = new ImageIcon("megaman-right-jump.png").getImage();
+        Image megaman = new ImageIcon("img/megaman-right-walk.gif").getImage();
+        Image megamanPulo = new ImageIcon("img/megaman-right-jump.png").getImage();
+        Image megamanMorto = new ImageIcon("img/megaman-right-jump.png").getImage();
 
-        Image pikachu = new ImageIcon("pikachu.gif").getImage();        
-        Image pikachuPulo = new ImageIcon("pikachupulo.png").getImage();
-        Image pikachuMorto = new ImageIcon("pikachudeath.png").getImage();
+        Image pikachu = new ImageIcon("img/pikachu.gif").getImage();        
+        Image pikachuPulo = new ImageIcon("img/pikachupulo.png").getImage();
+        Image pikachuMorto = new ImageIcon("img/pikachudeath.png").getImage();
 
         
         blocoPadrao = new Bloco(larguraPersonagem, alturaPersonagem, personagemX, personagemY, padrao, padraoPulando, padraoMorto);

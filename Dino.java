@@ -51,9 +51,9 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
     int velocidadeY = 0;
     int gravidade = 2;
 
-    Image background = new ImageIcon(getClass().getResource("background_layer_1.png")).getImage();
-    Image background_1 = new ImageIcon(getClass().getResource("background_layer_2.png")).getImage();
-    Image background_2 = new ImageIcon(getClass().getResource("background_layer_3.png")).getImage();
+    Image background = new ImageIcon(getClass().getResource("img/background_layer_1.png")).getImage();
+    Image background_1 = new ImageIcon(getClass().getResource("img/background_layer_2.png")).getImage();
+    Image background_2 = new ImageIcon(getClass().getResource("img/background_layer_3.png")).getImage();
 
     Bloco personagemBloco;
 
@@ -93,14 +93,14 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
 
         this.personagemAndando = menu.personagemEscolhido.imagem;
         this.personagemPulando = menu.personagemEscolhido.imagemPulando;
-        this.imgObstaculo1 = new ImageIcon(getClass().getResource("spike A.png")).getImage();
-        this.imgObstaculo2 = new ImageIcon(getClass().getResource("spike B.png")).getImage();
-        this.imgObstaculo3 = new ImageIcon(getClass().getResource("spike C.png")).getImage();
-        this.imgObstaculo4 = new ImageIcon(getClass().getResource("spike D.png")).getImage();
-        this.imgObstaculo5 = new ImageIcon(getClass().getResource("lanca.png")).getImage();
-        this.placar = new ImageIcon(getClass().getResource("pontos.png")).getImage();
-        this.placarRecorde = new ImageIcon(getClass().getResource("recorde.png")).getImage();
-        this.reiniciar = new ImageIcon(getClass().getResource("gameover.png")).getImage();
+        this.imgObstaculo1 = new ImageIcon(getClass().getResource("img/spike A.png")).getImage();
+        this.imgObstaculo2 = new ImageIcon(getClass().getResource("img/spike B.png")).getImage();
+        this.imgObstaculo3 = new ImageIcon(getClass().getResource("img/spike C.png")).getImage();
+        this.imgObstaculo4 = new ImageIcon(getClass().getResource("img/spike D.png")).getImage();
+        this.imgObstaculo5 = new ImageIcon(getClass().getResource("img/lanca.png")).getImage();
+        this.placar = new ImageIcon(getClass().getResource("img/pontos.png")).getImage();
+        this.placarRecorde = new ImageIcon(getClass().getResource("img/recorde.png")).getImage();
+        this.reiniciar = new ImageIcon(getClass().getResource("img/gameover.png")).getImage();
         this.personagemMorto = menu.personagemEscolhido.imagemMorto;
 
 
