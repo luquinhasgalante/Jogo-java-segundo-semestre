@@ -24,10 +24,12 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
     int alturaPersonagem = 50;
     int larguraPersonagem = 50;
 
-    int personagemX = 300;
+    int personagemX = 335;
     int personagemY;
 
     Image fundo = new ImageIcon(getClass().getResource("fundo.jpg")).getImage();
+    Image fundoDireita = new ImageIcon(getClass().getResource("fundo direita.jpg")).getImage();
+    Image fundoEsquerda = new ImageIcon(getClass().getResource("fundo esquerda.jpg")).getImage();
     Bloco background = new Bloco(largura, altura, 0, 0, fundo);
     
     ArrayList<Bloco> fundos;
@@ -54,7 +56,7 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
         loopTimer = new Timer(1000/60, this);
         loopTimer.start();
 
-        this.personagemY = altura / 2;
+        this.personagemY = (altura / 2) - 10;
 
 
         Image padrao = new ImageIcon(getClass().getResource("andar.gif")).getImage();
@@ -99,10 +101,7 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
     }
 
     public void draw(Graphics g) {
-        g.drawImage(background.imagem, background.x, background.y, background.largura, background.altura, null);
-        g.setFont(new Font("Arial", Font.BOLD, 30));
-        g.setColor(Color.WHITE);
-        g.drawString("Selecione seu personagem: ", 175, 30);
+        g.drawImage(background.imagem, background.x, background.y, background.largura, background.altura + 60, null);
         g.drawImage(personagemEscolhido.imagem, personagemEscolhido.x, personagemEscolhido.y, personagemEscolhido.largura, personagemEscolhido.altura, null);
     }
 
@@ -116,6 +115,9 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
         Dino dino = new Dino (this);
 
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
+
+            background.imagem = fundoDireita;
+
             if(contador < personagens.size() - 1){
                 contador++;
                 personagemEscolhido = personagens.get(contador);
@@ -127,6 +129,8 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
         }
 
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {
+            background.imagem = fundoEsquerda;
+
             if(contador > 0) {
                 contador--;
                 personagemEscolhido = personagens.get(contador);
@@ -136,7 +140,7 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
             }
         }
 
-        if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+        if(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE) {
             int largura = 720;
             int altura = 250;
 
@@ -156,6 +160,7 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
 
     @Override
     public void keyReleased(KeyEvent e) {
+        background.imagem = fundo;
     }
 
     @Override

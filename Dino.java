@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
@@ -21,11 +22,15 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
 
     Image personagemAndando;
     Image personagemPulando;
-    Image imgOsbtaculo1;
-    Image imgOsbtaculo2;
-    Image imgOsbtaculo3;
-    Image imgOsbtaculo4;
+    Image imgObstaculo1;
+    Image imgObstaculo2;
+    Image imgObstaculo3;
+    Image imgObstaculo4;
+    Image imgObstaculo5;
     Image personagemMorto;
+    Image placar;
+    Image placarRecorde;
+    Image reiniciar;
     Timer loopTimer;
     Timer obsTimer;
     Timer velTimer;
@@ -59,6 +64,10 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
     Bloco fundo_2;
     Bloco fundo2_2;
 
+
+    Bloco placarBloco;
+    Bloco placarRecordeBloco;
+
     ArrayList<Bloco> arrayObs;
 
     int score = 0;
@@ -84,10 +93,14 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
 
         this.personagemAndando = menu.personagemEscolhido.imagem;
         this.personagemPulando = menu.personagemEscolhido.imagemPulando;
-        this.imgOsbtaculo1 = new ImageIcon(getClass().getResource("spike A.png")).getImage();
-        this.imgOsbtaculo2 = new ImageIcon(getClass().getResource("spike B.png")).getImage();
-        this.imgOsbtaculo3 = new ImageIcon(getClass().getResource("spike C.png")).getImage();
-        this.imgOsbtaculo4 = new ImageIcon(getClass().getResource("spike D.png")).getImage();
+        this.imgObstaculo1 = new ImageIcon(getClass().getResource("spike A.png")).getImage();
+        this.imgObstaculo2 = new ImageIcon(getClass().getResource("spike B.png")).getImage();
+        this.imgObstaculo3 = new ImageIcon(getClass().getResource("spike C.png")).getImage();
+        this.imgObstaculo4 = new ImageIcon(getClass().getResource("spike D.png")).getImage();
+        this.imgObstaculo5 = new ImageIcon(getClass().getResource("lanca.png")).getImage();
+        this.placar = new ImageIcon(getClass().getResource("pontos.png")).getImage();
+        this.placarRecorde = new ImageIcon(getClass().getResource("recorde.png")).getImage();
+        this.reiniciar = new ImageIcon(getClass().getResource("gameover.png")).getImage();
         this.personagemMorto = menu.personagemEscolhido.imagemMorto;
 
 
@@ -99,6 +112,9 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
         fundo2_1 = new Bloco(largura, altura, fundo_1.largura, 0, background_1);
         fundo_2 = new Bloco(largura, altura, 0, 0, background_2);
         fundo2_2 = new Bloco(largura, altura, fundo_2.largura, 0, background_2);
+
+        placarRecordeBloco = new Bloco(130, 25, 400, 10, placarRecorde);
+        placarBloco = new Bloco(150, 25, 30, 10, placar);
 
 
         this.setPreferredSize(new Dimension(largura, altura));
@@ -139,19 +155,22 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
         double chance = Math.random();
         
         if(chance < .2) {
-            Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgOsbtaculo1);
+            Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgObstaculo1);
             arrayObs.add(obs);
         }
         else if(chance < .4) {
-            Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgOsbtaculo2);
+            Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgObstaculo2);
             arrayObs.add(obs);
         }
         else if(chance < .6) {
-            Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgOsbtaculo3);
+            Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgObstaculo3);
             arrayObs.add(obs);
         }
         else if(chance < .8) {
-            Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgOsbtaculo4);
+            Bloco obs = new Bloco(larguraObs, alturaObs, obsX, obsY, imgObstaculo4);
+            arrayObs.add(obs);
+        }else{
+            Bloco obs = new Bloco(larguraObs + 20, alturaObs, obsX, obsY - 36, imgObstaculo5);
             arrayObs.add(obs);
         }
     }
@@ -170,10 +189,17 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
             g.drawImage(obs.imagem, obs.x, obs.y, obs.largura, obs.altura, null);
         }
 
-        g.setColor(Color.WHITE);
-        g.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
-        g.drawString("Pontos: " + score, 30, 30);
-        g.drawString("Recorde: " + recorde, 450, 30);
+        
+        if(gameOver) {
+            g.drawImage(reiniciar, 0, 0, largura, altura, null);
+        }else {
+            g.setColor(Color.WHITE);
+            g.setFont(new Font(Font.DIALOG, Font.BOLD, 20));
+            g.drawImage(placarBloco.imagem, placarBloco.x, placarBloco.y, placarBloco.largura, placarBloco.altura, null);
+            g.drawString(" " + score, 180, 33);
+            g.drawImage(placarRecordeBloco.imagem, placarRecordeBloco.x, placarRecordeBloco.y, placarRecordeBloco.largura, placarRecordeBloco.altura, null);
+            g.drawString("" + recorde, 550, 33);
+        }
     }
 
     public void mover() {
@@ -270,8 +296,13 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
         }
 
         if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-            personagemBloco.altura = 30;
-            personagemBloco.y = (altura - personagemBloco.altura);
+            if(personagemBloco.y == (altura - personagemBloco.altura)) {
+                personagemBloco.altura = 35;
+                personagemBloco.y = (altura - personagemBloco.altura);
+            }
+            else {
+                gravidade = 10;
+            }
         }
     }
 
@@ -282,5 +313,6 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
     @Override
     public void keyReleased(KeyEvent e) {
         personagemBloco.altura = alturaPersonagem;
+        gravidade = 2;
     }
 }
