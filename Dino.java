@@ -301,6 +301,25 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
             else {
                 gravidade = 10;
             }
+            
+            if(gameOver) {
+                gameOver = false;
+                fundo1.x = 0;
+                fundo2.x = fundo2.largura;
+
+                fundo_2.x = 0;
+                fundo2_2.x = fundo_2.largura;
+                
+                recorde = Math.max(recorde, score);
+                score = 0;
+                arrayObs.clear();
+                velocidade = 20;
+
+                loopTimer.start();
+                obsTimer.start();
+                
+            }
+
         }
     }
 
@@ -313,4 +332,5 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
         personagemBloco.altura = alturaPersonagem;
         gravidade = 2;
     }
+
 }
