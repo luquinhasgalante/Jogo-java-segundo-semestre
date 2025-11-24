@@ -1,7 +1,5 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -9,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -19,7 +16,8 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
     int altura = 250;
     int largura = 720;
 
-    int contador = 0;
+    int contadorX = 0;
+    int contadorY = 0;
 
     int alturaPersonagem = 50;
     int larguraPersonagem = 50;
@@ -27,13 +25,21 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
     int personagemX = 335;
     int personagemY;
 
-    Image fundo = new ImageIcon(getClass().getResource("img/fundo.jpg")).getImage();
-    Image fundoDireita = new ImageIcon(getClass().getResource("img/fundo direita.jpg")).getImage();
-    Image fundoEsquerda = new ImageIcon(getClass().getResource("img/fundo esquerda.jpg")).getImage();
+    Image fundo = new ImageIcon(getClass().getResource("img/fundo.png")).getImage();
+    Image fundoDireita = new ImageIcon(getClass().getResource("img/fundo direita.png")).getImage();
+    Image fundoEsquerda = new ImageIcon(getClass().getResource("img/fundo esquerda.png")).getImage();
+    Image fundoCima = new ImageIcon(getClass().getResource("img/fundo cima.png")).getImage();
+    Image fundoBaixo = new ImageIcon(getClass().getResource("img/fundo baixo.png")).getImage();
     Bloco background = new Bloco(largura, altura, 0, 0, fundo);
     
     ArrayList<Bloco> fundos;
+    ArrayList<Bloco> fundosPreview;
     ArrayList<Bloco> personagens;
+
+    Bloco fundoEscolhido;
+    Bloco fundoFloresta;
+    Bloco fundoCanyon;
+    Bloco fundoMontanha;
 
     Bloco personagemEscolhido;
     Bloco blocoPadrao;
@@ -57,6 +63,36 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
         loopTimer.start();
 
         this.personagemY = (altura / 2) - 10;
+
+        
+        Image florestaPreview = new ImageIcon(getClass().getResource("img/background_preview_1.jpg")).getImage();
+        Image montanhaPreview = new ImageIcon(getClass().getResource("img/background_preview_2.png")).getImage();
+        Image canyonPreview = new ImageIcon(getClass().getResource("img/background_preview_3.png")).getImage();
+        
+        Image floresta = new ImageIcon(getClass().getResource("img/background_layer_1.png")).getImage();
+        Image floresta1 = new ImageIcon(getClass().getResource("img/background_layer_2.png")).getImage();
+        Image floresta2 = new ImageIcon(getClass().getResource("img/background_layer_3.png")).getImage();
+        
+        Image canyon = new ImageIcon(getClass().getResource("img/sky.png")).getImage();
+        Image canyon1 = new ImageIcon(getClass().getResource("img/far-mountains.png")).getImage();
+        Image canyon2 = new ImageIcon(getClass().getResource("img/canyon.png")).getImage();
+        
+        Image montanha = new ImageIcon(getClass().getResource("img/fundo sem lua.png")).getImage();
+        Image montanha1 = new ImageIcon(getClass().getResource("img/mountains.png")).getImage();
+        Image montanha2 = new ImageIcon(getClass().getResource("img/trees.png")).getImage();
+        
+
+        fundos = new ArrayList<>();
+
+        fundoCanyon = new Bloco(largura, altura, 0, 0, canyon, canyon1, canyon2, canyonPreview);
+        fundoFloresta = new Bloco(largura, altura, 0, 0, floresta, floresta1, floresta2, florestaPreview);
+        fundoMontanha = new Bloco(largura, altura, 0, 0, montanha, montanha1, montanha2, montanhaPreview);
+        
+        fundos.add(fundoCanyon);
+        fundos.add(fundoFloresta);
+        fundos.add(fundoMontanha);
+
+        fundoEscolhido = fundos.get(contadorY);
 
 
         Image padrao = new ImageIcon(getClass().getResource("img/andar.gif")).getImage();
@@ -90,7 +126,7 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
         personagens.add(blocoMegaman);
         personagens.add(blocoPikachu);
 
-        personagemEscolhido = personagens.get(contador);
+        personagemEscolhido = personagens.get(contadorX);
         
     }
 
@@ -101,8 +137,10 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
     }
 
     public void draw(Graphics g) {
-        g.drawImage(background.imagem, background.x, background.y, background.largura, background.altura + 60, null);
-        g.drawImage(personagemEscolhido.imagem, personagemEscolhido.x, personagemEscolhido.y, personagemEscolhido.largura, personagemEscolhido.altura, null);
+        g.drawImage(background.imagem, background.x, background.y, background.largura, background.altura, null);
+        g.drawImage(personagemEscolhido.imagem, 152, personagemEscolhido.y - 10, personagemEscolhido.largura, personagemEscolhido.altura, null);
+        g.drawImage(fundoEscolhido.preview, largura - 195, personagemEscolhido.y - 12, 50, 50, null);
+
     }
 
     @Override
@@ -118,27 +156,55 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
 
             background.imagem = fundoDireita;
 
-            if(contador < personagens.size() - 1){
-                contador++;
-                personagemEscolhido = personagens.get(contador);
+            if(contadorX < personagens.size() - 1){
+                contadorX++;
+                personagemEscolhido = personagens.get(contadorX);
             }
             else{
                 personagemEscolhido = personagens.get(0);
-                contador = 0;
+                contadorX = 0;
             }
         }
 
         if(e.getKeyCode() == KeyEvent.VK_LEFT) {
             background.imagem = fundoEsquerda;
 
-            if(contador > 0) {
-                contador--;
-                personagemEscolhido = personagens.get(contador);
+            if(contadorX > 0) {
+                contadorX--;
+                personagemEscolhido = personagens.get(contadorX);
             }else{
-                contador = (personagens.size() - 1);
+                contadorX = (personagens.size() - 1);
                 personagemEscolhido = personagens.get(personagens.size() - 1);
             }
         }
+
+
+        if(e.getKeyCode() == KeyEvent.VK_UP) {
+            background.imagem = fundoCima;
+
+            if(contadorY < fundos.size() - 1) {
+                contadorY++;
+            } else {
+                contadorY = 0;
+            }
+
+            fundoEscolhido = fundos.get(contadorY);
+        }
+
+        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+            background.imagem = fundoBaixo;
+
+            if(contadorY > 0) {
+                contadorY--;
+            } else {
+                contadorY = (fundos.size() - 1);
+            }
+            
+            fundoEscolhido = fundos.get(contadorY);
+        }
+
+
+
 
         if(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE) {
             int largura = 720;

@@ -6,6 +6,7 @@ public class Bloco {
     Image imagem;
     Image imagemPulando;
     Image imagemMorto;
+    Image preview;
 
     
     public Bloco(int largura, int altura, int x, int y, Image imagem, Image imagemPulando, Image imagemMorto) {
@@ -16,6 +17,17 @@ public class Bloco {
         this.imagem = imagem;
         this.imagemPulando = imagemPulando;
         this.imagemMorto = imagemMorto;
+    }
+
+    public Bloco(int largura, int altura, int x, int y, Image imagem, Image imagemPulando, Image imagemMorto, Image preview) {
+        this.largura = largura;
+        this.altura = altura;
+        this.x = x;
+        this.y = y;
+        this.imagem = imagem;
+        this.imagemPulando = imagemPulando;
+        this.imagemMorto = imagemMorto;
+        this.preview = preview;
     }
 
     public Bloco(int largura, int altura, int x, int y, Image imagem) {

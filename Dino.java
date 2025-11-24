@@ -8,8 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -50,10 +48,6 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
 
     int velocidadeY = 0;
     int gravidade = 2;
-
-    Image background = new ImageIcon(getClass().getResource("img/background_layer_1.png")).getImage();
-    Image background_1 = new ImageIcon(getClass().getResource("img/background_layer_2.png")).getImage();
-    Image background_2 = new ImageIcon(getClass().getResource("img/background_layer_3.png")).getImage();
 
     Bloco personagemBloco;
 
@@ -103,6 +97,10 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
         this.reiniciar = new ImageIcon(getClass().getResource("img/gameover.png")).getImage();
         this.personagemMorto = menu.personagemEscolhido.imagemMorto;
 
+        
+        Image background = menu.fundoEscolhido.imagem;
+        Image background_1 = menu.fundoEscolhido.imagemPulando;
+        Image background_2 = menu.fundoEscolhido.imagemMorto;
 
 
         personagemBloco = new Bloco(larguraPersonagem, alturaPersonagem, personagemX, personagemY, personagemAndando);
