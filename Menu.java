@@ -88,9 +88,9 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
         fundoFloresta = new Bloco(largura, altura, 0, 0, floresta, floresta1, floresta2, florestaPreview);
         fundoMontanha = new Bloco(largura, altura, 0, 0, montanha, montanha1, montanha2, montanhaPreview);
         
-        fundos.add(fundoCanyon);
         fundos.add(fundoFloresta);
         fundos.add(fundoMontanha);
+        fundos.add(fundoCanyon);
 
         fundoEscolhido = fundos.get(contadorY);
 
@@ -234,3 +234,4 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
         repaint();
     }
 }
+
