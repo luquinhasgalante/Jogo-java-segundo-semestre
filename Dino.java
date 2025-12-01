@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -9,6 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -29,44 +31,54 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
     Image placar;
     Image placarRecorde;
     Image reiniciar;
+    Image pauseContinuar;
+    Image pauseMenu;
     Timer loopTimer;
     Timer obsTimer;
     Timer velTimer;
-
-
+    
+    
     int alturaPersonagem;
     int larguraPersonagem;
     int personagemX;
     int personagemY;
-
+    
     int alturaObs = 30;
     int larguraObs = 30;
     int obsX;
     int obsY;
-
+    
     int recorde = 0;
-
+    
     int velocidadeY = 0;
     int gravidade = 2;
-
+    
+    int contadorPause = 0;
+    
     Bloco personagemBloco;
-
+    
     Bloco fundo1;
     Bloco fundo2;
     Bloco fundo_1;
     Bloco fundo2_1;
     Bloco fundo_2;
     Bloco fundo2_2;
+    
+    Bloco blocoPauseMenu;
+    Bloco blocoPauseContinuar;
+    Bloco pauseImage;
 
 
     Bloco placarBloco;
     Bloco placarRecordeBloco;
 
     ArrayList<Bloco> arrayObs;
+    ArrayList<Bloco> pauseImages;
 
     int score = 0;
 
     boolean gameOver = false;
+    boolean pause = false;
 
     public Dino(Menu menu) {
         this.altura = 250;
@@ -95,8 +107,18 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
         this.placar = new ImageIcon(getClass().getResource("img/pontos.png")).getImage();
         this.placarRecorde = new ImageIcon(getClass().getResource("img/recorde.png")).getImage();
         this.reiniciar = new ImageIcon(getClass().getResource("img/gameover.png")).getImage();
+        this.pauseContinuar = new ImageIcon(getClass().getResource("img/pause_continuar.png")).getImage();
+        this.pauseMenu = new ImageIcon(getClass().getResource("img/pause_menu.png")).getImage();
         this.personagemMorto = menu.personagemEscolhido.imagemMorto;
 
+        this.blocoPauseContinuar = new Bloco(largura, altura, 0, 0, pauseContinuar);
+        this.blocoPauseMenu = new Bloco(largura, altura, 0, 0, pauseMenu);
+        pauseImages = new ArrayList<>();
+        pauseImages.add(blocoPauseContinuar);
+        pauseImages.add(blocoPauseMenu);
+
+        pauseImage = pauseImages.get(contadorPause);
+        
         
         Image background = menu.fundoEscolhido.imagem;
         Image background_1 = menu.fundoEscolhido.imagemPulando;
@@ -198,6 +220,10 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
             g.drawImage(placarRecordeBloco.imagem, placarRecordeBloco.x, placarRecordeBloco.y, placarRecordeBloco.largura, placarRecordeBloco.altura, null);
             g.drawString("" + recorde, 550, 33);
         }
+
+        if(pause) {
+            g.drawImage(pauseImage.imagem, pauseImage.x, pauseImage.y, pauseImage.largura, pauseImage.altura, null);
+        }
     }
 
     public void mover() {
@@ -260,7 +286,7 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
         mover();
         repaint();
 
-        if(gameOver) {
+        if(gameOver || pause) {
             loopTimer.stop();
             obsTimer.stop();
         }
@@ -268,58 +294,101 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
     
     @Override
     public void keyPressed(KeyEvent e) {
-        if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) {
-            if(personagemBloco.y == personagemY) {
-                velocidadeY = -20;
-                personagemBloco.imagem = personagemPulando;
+
+        
+        if(pause) {
+            if(e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_UP) {
+                contadorPause++;
+                pauseImage = pauseImages.get(contadorPause % 2);
+                repaint();
             }
 
-            if(gameOver) {
-                gameOver = false;
-                fundo1.x = 0;
-                fundo2.x = fundo2.largura;
+            if(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_SPACE) {
+                if(contadorPause % 2 == 0) {
+                    pause = false;
+                    loopTimer.start();
+                    obsTimer.start();
+                }else {
+                    int largura = 720;
+                    int altura = 250;
 
-                fundo_2.x = 0;
-                fundo2_2.x = fundo_2.largura;
+                    JFrame frame = new JFrame();
+                    Menu menu = new Menu();
+                    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                    frame.setSize(largura, altura);
+                    frame.setLayout(new BorderLayout());
+                    frame.setResizable(false);
+                    
+                    frame.add(menu);
+                    frame.setLocationRelativeTo(null);
+                    
+                    
+                    menu.requestFocus();
+                    frame.pack();
+                    frame.setVisible(true);
+                }
+            }
+        }else {
+            
+            if(e.getKeyCode() == KeyEvent.VK_SPACE || e.getKeyCode() == KeyEvent.VK_UP) {
+                if(personagemBloco.y == personagemY) {
+                    velocidadeY = -20;
+                    personagemBloco.imagem = personagemPulando;
+                }
                 
-                recorde = Math.max(recorde, score);
-                score = 0;
-                arrayObs.clear();
-                velocidade = 20;
-
-                loopTimer.start();
-                obsTimer.start();
-                
-            }
-        }
-
-        if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-            if(personagemBloco.y == (altura - personagemBloco.altura)) {
-                personagemBloco.altura = 35;
-                personagemBloco.y = (altura - personagemBloco.altura);
-            }
-            else {
-                gravidade = 10;
+                if(gameOver) {
+                    gameOver = false;
+                    fundo1.x = 0;
+                    fundo2.x = fundo2.largura;
+                    
+                    fundo_2.x = 0;
+                    fundo2_2.x = fundo_2.largura;
+                    
+                    recorde = Math.max(recorde, score);
+                    score = 0;
+                    arrayObs.clear();
+                    velocidade = 20;
+                    
+                    loopTimer.start();
+                    obsTimer.start();
+                    
+                }
             }
             
-            if(gameOver) {
-                gameOver = false;
-                fundo1.x = 0;
-                fundo2.x = fundo2.largura;
-
-                fundo_2.x = 0;
-                fundo2_2.x = fundo_2.largura;
+            if(e.getKeyCode() == KeyEvent.VK_DOWN) {
+                if(personagemBloco.y == (altura - personagemBloco.altura)) {
+                    personagemBloco.altura = 35;
+                    personagemBloco.y = (altura - personagemBloco.altura);
+                }
+                else {
+                    gravidade = 10;
+                }
                 
-                recorde = Math.max(recorde, score);
-                score = 0;
-                arrayObs.clear();
-                velocidade = 20;
-
-                loopTimer.start();
-                obsTimer.start();
-                
+                if(gameOver) {
+                    gameOver = false;
+                    fundo1.x = 0;
+                    fundo2.x = fundo2.largura;
+                    
+                    fundo_2.x = 0;
+                    fundo2_2.x = fundo_2.largura;
+                    
+                    recorde = Math.max(recorde, score);
+                    score = 0;
+                    arrayObs.clear();
+                    velocidade = 20;
+                    
+                    loopTimer.start();
+                    obsTimer.start();
+                    
+                }
             }
-
+            
+            if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                
+                if(!gameOver) {
+                    pause = true;
+                }
+            }
         }
     }
 
