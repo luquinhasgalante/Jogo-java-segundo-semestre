@@ -3,10 +3,18 @@
 Uma cópia do “jogo do Chrome” com outras features legais.  
 Este projeto foi desenvolvido como trabalho do segundo semestre.
 
+<img width="718" height="251" alt="Captura de tela 2025-12-01 115557" src="https://github.com/user-attachments/assets/ac4c2188-ed4c-44a7-a2ca-f7be59023e59" />
+
+
+
+
 ## 🎯 Sobre
 
 Este repositório contém um jogo simples em Java inspirado no jogo do “dinossauro do Chrome” — onde um personagem da sua escolha precisa sobreviver a obstáculos.  
 O objetivo principal é servir como um exercício prático de programação orientada a objetos com Java.
+
+<img width="713" height="247" alt="image" src="https://github.com/user-attachments/assets/7f70334e-3c5a-4c3b-b99a-296a57fedec4" />
+
 
 ## 📁 Estrutura do Projeto
 
