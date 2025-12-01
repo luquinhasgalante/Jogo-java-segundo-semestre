@@ -286,9 +286,15 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
         mover();
         repaint();
 
-        if(gameOver || pause) {
+        if(gameOver) {
             loopTimer.stop();
             obsTimer.stop();
+        }
+        
+        if(pause) {
+            loopTimer.stop();
+            obsTimer.stop();
+            velTimer.stop();
         }
     }
     
@@ -308,6 +314,7 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
                     pause = false;
                     loopTimer.start();
                     obsTimer.start();
+                    velTimer.start();
                 }else {
                     int largura = 720;
                     int altura = 250;
@@ -403,3 +410,4 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
     }
 
 }
+
