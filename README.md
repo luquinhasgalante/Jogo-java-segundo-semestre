@@ -21,7 +21,6 @@ Jogo-java-segundo-semestre/
 │
 └── README.md — (você está aqui) documentação do projeto
 
-Copiar código
 
 ## 🛠️ Tecnologias
 
