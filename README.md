@@ -22,7 +22,7 @@ Jogo-java-segundo-semestre/
 │
 │ ├── Menu.java — controla o menu e a lógica inicial do jogo
 │ ├── Game.java — lógica principal do jogo (game loop, atualizações, etc.)
-│ ├── Dino.java — classe que representa o protagonista (dinossauro)
+│ ├── Dino.java — classe que representa o protagonista (dinossauro, megamen, pikachu etc.)
 │ ├── Bloco.java — classe que representa obstáculos/blocos do jogo
 │
 ├── img/ — recursos gráficos/imagens usados no jogo
