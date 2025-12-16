@@ -16,6 +16,8 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
     int altura = 250;
     int largura = 720;
 
+    private JFrame frame;
+
     int contadorX = 0;
     int contadorY = 0;
 
@@ -50,8 +52,10 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
     Timer loopTimer;
 
 
-    public Menu() {
+    public Menu(JFrame frame) {
         
+        this.frame = frame;
+
         this.setSize(new Dimension(largura, altura));
         this.setPreferredSize(new Dimension(largura, altura));
         this.setFocusable(true);
@@ -149,7 +153,8 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
     
     @Override
     public void keyPressed(KeyEvent e) {
-        JFrame frame = new JFrame();
+        this.frame.dispose();
+        JFrame dinoFrame = new JFrame();
         Dino dino = new Dino (this);
 
         if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -210,17 +215,17 @@ public class Menu extends JPanel implements ActionListener, KeyListener {
             int largura = 720;
             int altura = 250;
 
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(largura, altura);
-            frame.setLayout(new BorderLayout());
-            frame.setResizable(false);
+            dinoFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            dinoFrame.setSize(largura, altura);
+            dinoFrame.setLayout(new BorderLayout());
+            dinoFrame.setResizable(false);
 
-            frame.add(dino);
-            frame.setLocationRelativeTo(null);
+            dinoFrame.add(dino);
+            dinoFrame.setLocationRelativeTo(null);
             
             dino.requestFocus();
-            frame.pack();
-            frame.setVisible(true);
+            dinoFrame.pack();
+            dinoFrame.setVisible(true);
         }
     }
 

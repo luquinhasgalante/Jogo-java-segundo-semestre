@@ -320,7 +320,7 @@ public class Dino extends JPanel implements ActionListener, KeyListener{
                     int altura = 250;
 
                     JFrame frame = new JFrame();
-                    Menu menu = new Menu();
+                    Menu menu = new Menu(frame);
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frame.setSize(largura, altura);
                     frame.setLayout(new BorderLayout());
